@@ -2,6 +2,8 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import './App.css'
 
 function App(){
@@ -57,34 +59,35 @@ function App(){
   }
 
   return (
-  <div className="app">
-    <div className="chat-container">
-      <h1 className="chat-title">TEaCH</h1>
-      <p className="chat-subtitle">
-        Tech Teacher
-      </p>
+    <div className="app">
+      <div className="chat-container">
+        <h1 className="chat-title">TEaCH</h1>
+        <p className="chat-subtitle">Tech Teacher</p>
 
-      <div className="chat-box">
-        {chat.map((item, index) => (
-          <div key={index} className={`message ${item.role}`}>
-            <strong>{item.role === "user" ? "Anda" : "Bot"}</strong>
-            <p>{item.text}</p>
-          </div>
-        ))}
+        <div className="chat-box">
+          {chat.map((item, index) => (
+            <div key={index} className={`message ${item.role}`}>
+              <strong>{item.role === "user" ? "Anda" : "Bot"}</strong>
+
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {item.text}
+              </ReactMarkdown>
+            </div>
+          ))}
+        </div>
+
+        <form onSubmit={sendMessage} className="chat-form">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Ask Tech Teacher"
+          />
+          <button type="submit">Send</button>
+        </form>
       </div>
-
-      <form onSubmit={sendMessage} className="chat-form">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Ask Tech Teacher"
-        />
-        <button type="submit">Send</button>
-      </form>
     </div>
-  </div>
-);
+  );
 }
 
 export default App
